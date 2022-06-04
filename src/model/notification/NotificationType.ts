@@ -1,0 +1,8 @@
+export enum NotificationType {
+  CREATE = "CREATE",
+  MODIFY = "MODIFY",
+  CANCEL = "CANCEL",
+  ADDTEST = "ADDTEST",
+  PROVIDEKIT = "PROVIDEKIT",
+  DELETE = "DELETE"
+}

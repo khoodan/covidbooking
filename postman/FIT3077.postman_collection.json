@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "4e7db4c1-e0de-4028-be69-5db68aaa7b43",
+		"name": "FIT3077",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{authorization}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://fit3077.com/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"fit3077",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New User",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{authorization}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"givenName\": \"string\",\n  \"familyName\": \"string\",\n  \"userName\": \"string\",\n  \"password\": \"string\",\n  \"phoneNumber\": \"string\",\n  \"isCustomer\": true,\n  \"isAdmin\": true,\n  \"isHealthcareWorker\": true,\n  \"additionalInfo\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fit3077.com/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"fit3077",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Testing Site",
+			"item": [
+				{
+					"name": "Get Testing Site",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{authorization}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit3077.com/api/v1/testing-site",
+							"protocol": "https",
+							"host": [
+								"fit3077",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"testing-site"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Booking",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{authorization}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit3077.com/api/v1/booking",
+							"protocol": "https",
+							"host": [
+								"fit3077",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
