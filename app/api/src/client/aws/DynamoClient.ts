@@ -1,10 +1,10 @@
-import { DynamoDBClient } from "./DynamoDB";
+import { DynamoDocumentClient } from "./DynamoDB"
 
 export abstract class DynamoClient {
   table: string
 
   get client() {
-    return DynamoDBClient
+    return DynamoDocumentClient
   }
 
   constructor(tableSuffix: string) {

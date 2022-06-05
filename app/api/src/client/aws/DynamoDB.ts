@@ -1,14 +1,25 @@
-// Create the DynamoDB service client module using ES6 syntax.
-import AWS from "aws-sdk";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, TranslateConfig } from "@aws-sdk/lib-dynamodb";
 
-export const DynamoClientCreator = () => {
-  AWS.config.update({
+export const DynamoDocumentClientCreator = () => {
+  const ddbClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
   });
 
-  return new AWS.DynamoDB.DocumentClient();
+  const translateConfig: TranslateConfig = {
+    marshallOptions: {
+
+    },
+    unmarshallOptions: {
+
+    }
+  }
+
+  return DynamoDBDocumentClient.from(ddbClient, translateConfig)
 }
 
-export const DynamoDBClient = DynamoClientCreator()
+export const DynamoDocumentClient = DynamoDocumentClientCreator()

@@ -1,6 +1,8 @@
+import { DynamoDB, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { UserSchema } from "@schema/UserSchema";
 import { UserClient } from "../UserClient";
 import { DynamoClient } from "./DynamoClient";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export class DynamoUserClient extends DynamoClient implements UserClient {
   constructor() {
@@ -9,9 +11,11 @@ export class DynamoUserClient extends DynamoClient implements UserClient {
 
   async getUsers(): Promise<UserSchema[]> {
     const params = {
-      TableName: this.table
+      TableName: this.table,
     };
-    const userids = await this.client.scan(params).promise();
-    return userids.Items;
+    const response = await this.client.send(new ScanCommand(params))
+    const users = response.Items.map(item => unmarshall(item))
+
+    return users;
   }
 }
