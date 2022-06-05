@@ -7,3 +7,4 @@ yarn.lock
 /src/constant/API.ts
 /app/api/node_modules
 /app/frontend/node_modules
+/app/api/.env

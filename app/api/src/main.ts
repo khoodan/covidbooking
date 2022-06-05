@@ -10,10 +10,14 @@ if (process.env.NODE_ENV !== 'production') {
 import moduleAlias from 'module-alias';
 moduleAlias.addAliases({
   "@schema": "../../schema",
+  "src": __dirname
 })
 
 import express from 'express'
+import { UserController } from './controller/UserController';
 const app = express()
+
+app.use(UserController.path, UserController.router)
 
 app.get('/', (req, res) => res.status(200).send("OK"))
 
