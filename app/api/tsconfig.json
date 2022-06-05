@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
@@ -8,15 +9,14 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    // "paths": {
-    //   "@classes/*": ["src/classes/*"],
-    //   "@db/*": ["src/db/*"],
-    //   "@middleware/*": ["src/middleware/*"],
-    //   "@services/*": ["src/services/*"],
-    //   "@models/*": ["src/models/*"],
-    //   "@utilities/*": ["src/utilities/*"],
-    //   "*": ["node_modules/*"]
-    // }
+    "paths": {
+      "@schema/*": ["../schema/*"],
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*",
+    "../schema/**/*",
+    "node_modules/**/*",
+    "../../node_modules/**/*"
+  ]
 }

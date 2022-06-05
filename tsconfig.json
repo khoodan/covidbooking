@@ -1,0 +1,9 @@
+{
+  "references": [
+    { "path": "./app/api" },
+    { "path": "./app/frontend" }
+  ],
+  "files": [],
+  "include": [],
+  "exclude": ["**/node_modules"]
+}

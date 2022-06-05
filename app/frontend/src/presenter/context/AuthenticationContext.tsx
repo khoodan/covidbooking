@@ -1,11 +1,11 @@
 import jwtDecode from "jwt-decode";
 import React, { Context, useContext, useEffect, useMemo, useState } from "react";
+import { APIStatus } from "../../model/client/APIStatus";
 import { AxiosClientManager } from "../../model/client/axios/AxiosClientManager";
+import { CreateUserSchema } from "../../model/client/schema/UserSchema";
 import { User } from "../../model/user/User";
 import { AuthenticationPresenter } from "../AuthenticationPresenter";
 import { useUserPresenter } from "./UserPresenterContext";
-import { CreateUserSchema } from "../../model/client/schema/UserSchema";
-import { APIStatus } from "../../model/client/APIStatus";
 
 /**
  * Creates the authentication context

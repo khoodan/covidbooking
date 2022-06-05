@@ -6,6 +6,12 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
+// Create modules
+import moduleAlias from 'module-alias';
+moduleAlias.addAliases({
+  "@schema": "../../schema",
+})
+
 import express from 'express'
 const app = express()
 

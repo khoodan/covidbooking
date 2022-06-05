@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { TestType } from "../../model/test/TestType"
-import { StyledContainer } from "../StyledContainer"
+import { TestType } from "../../model/test/TestType";
+import { StyledContainer } from "../StyledContainer";
 
 /**
  * Props required for display the appropriate test for a patient
