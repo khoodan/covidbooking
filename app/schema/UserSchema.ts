@@ -1,3 +1,6 @@
+import { BookingSchema } from "./BookingSchema";
+import { TestSchema } from "./TestSchema";
+
 export interface UserSchema {
   id?: string;
   givenName?: string;
@@ -7,9 +10,9 @@ export interface UserSchema {
   isCustomer?: boolean;
   isReceptionist?: boolean;
   isHealthcareWorker?: boolean;
-  bookings?: any;
-  testsTaken?: any;
-  testsAdministered?: any;
+  bookings?: BookingSchema[];
+  testsTaken?: TestSchema[];
+  testsAdministered?: TestSchema[];
   additionalInfo?: any;
 }
 
