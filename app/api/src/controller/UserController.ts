@@ -16,5 +16,10 @@ router.get('/', async (req, res, next) => {
   })
 })
 
+router.post('/', (req, res, next) => {
+  userService.addUser(req.body)
+  .then(() => res.sendStatus(201))
+})
+
 export const UserController = new Endpoint('/user', router)
 

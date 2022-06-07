@@ -14,6 +14,7 @@ export interface UserSchema {
 }
 
 export interface CreateUserSchema {
+  id?: string;
   givenName: string;
   familyName: string;
   userName: string;
