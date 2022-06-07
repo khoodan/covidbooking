@@ -24,3 +24,16 @@ export interface TestSiteSchema {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface TestSiteDBSchema {
+  id?: string;
+  name?: string;
+  description?: string;
+  websiteUrl?: string;
+  phoneNumber?: string;
+  address?: AddressSchema
+  additionalInfo?: any;
+  bookingIds?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}

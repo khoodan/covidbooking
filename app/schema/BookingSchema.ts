@@ -23,3 +23,17 @@ export interface CreateBookingSchema {
   notes?: string;
   additionalInfo?: any;
 }
+
+export interface BookingDBSchema {
+  id?: string;
+  customerId?: string;
+  testingSiteId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  startTime?: string;
+  smsPin?: string;
+  status?: string;
+  covidTestIds?: string[];
+  notes?: string;
+  additionalInfo?: any;
+}

@@ -29,6 +29,21 @@ export interface CreateUserSchema {
   additionalInfo: any;
 }
 
+export interface UserDBSchema {
+  id?: string;
+  givenName?: string;
+  familyName?: string;
+  userName?: string;
+  phoneNumber?: string;
+  isCustomer?: boolean;
+  isReceptionist?: boolean;
+  isHealthcareWorker?: boolean;
+  bookingsIds?: string[];
+  testsTakenIds?: string[];
+  testsAdministeredIds?: string[];
+  additionalInfo?: any;
+}
+
 export interface Credentials {
   userName: string;
   password: string;
