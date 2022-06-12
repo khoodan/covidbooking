@@ -1,7 +1,7 @@
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { CreateUserSchema, UserSchema } from "@schema/UserSchema";
+import { CreateUserSchema, UserDBSchema } from "@schema/UserSchema";
 import { UserClient } from "../UserClient";
 import { DynamoClient } from "./DynamoClient";
 
@@ -10,7 +10,7 @@ export class DynamoUserClient extends DynamoClient implements UserClient {
     super('user')
   }
 
-  async getUsers(): Promise<UserSchema[]> {
+  async getUsers(): Promise<UserDBSchema[]> {
     const params = {
       TableName: this.table,
     };

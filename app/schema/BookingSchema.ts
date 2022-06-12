@@ -37,3 +37,5 @@ export interface BookingDBSchema {
   notes?: string;
   additionalInfo?: any;
 }
+
+export type AllBookingSchema = BookingSchema & BookingDBSchema;

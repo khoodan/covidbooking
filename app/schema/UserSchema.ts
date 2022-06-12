@@ -44,6 +44,8 @@ export interface UserDBSchema {
   additionalInfo?: any;
 }
 
+export type AllUserSchema = UserSchema & UserDBSchema;
+
 export interface Credentials {
   userName: string;
   password: string;

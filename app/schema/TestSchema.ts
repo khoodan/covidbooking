@@ -27,3 +27,19 @@ export interface CreateTestSchema {
   notes?: string;
   additionalInfo?: any;
 }
+
+export interface TestDBSchema {
+  id?: string;
+  type?: string;
+  patientId?: string;
+  administererId?: string;
+  bookingId?: string;
+  result?: string;
+  status?: string;
+  notes?: string;
+  datePerformed?: string;
+  dateOfResults?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  additionalInfo?: any; 
+}

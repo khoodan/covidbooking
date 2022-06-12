@@ -1,7 +1,7 @@
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { CreateBookingSchema, BookingSchema } from "@schema/BookingSchema";
+import { BookingDBSchema, CreateBookingSchema } from "@schema/BookingSchema";
 import { BookingClient } from "../BookingClient";
 import { DynamoClient } from "./DynamoClient";
 
@@ -10,7 +10,7 @@ export class DynamoBookingClient extends DynamoClient implements BookingClient {
     super('booking')
   }
 
-  async getBookings(): Promise<BookingSchema[]> {
+  async getBookings(): Promise<BookingDBSchema[]> {
     const params = {
       TableName: this.table,
     };
@@ -25,5 +25,9 @@ export class DynamoBookingClient extends DynamoClient implements BookingClient {
       TableName: this.table,
       Item: booking
     }))
+  }
+
+  getBookingForId(bookingId: string): Promise<BookingDBSchema> {
+    throw new Error("Method not implemented.");
   }
 }
