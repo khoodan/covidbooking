@@ -26,4 +26,8 @@ export class DynamoUserClient extends DynamoClient implements UserClient {
       Item: user
     }))
   }
+
+  getTestById(userId: string): Promise<UserDBSchema> {
+    throw new Error("Method not implemented.");
+  }
 }

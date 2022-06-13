@@ -1,9 +1,10 @@
 import { Status } from "@schema/Status";
-import { AllUserSchema, CreateUserSchema, UserDBSchema, UserSchema } from "@schema/UserSchema";
+import { AllUserSchema, CreateUserSchema, UserSchema } from "@schema/UserSchema";
 import { randomUUID } from "crypto";
 import { DynamoUserClient } from "src/client/aws/DynamoUserClient";
 import { UserClient } from "src/client/UserClient";
 import { BookingService } from "./BookingService";
+import { TestService } from "./TestService";
 
 export interface GetUserParams {
   includeBookings?: boolean;
@@ -12,8 +13,21 @@ export interface GetUserParams {
 }
 
 export class UserService {
-  userClient: UserClient = new DynamoUserClient()
-  bookingService: BookingService = new BookingService()
+  private userClient: UserClient = new DynamoUserClient()
+  private bookingService: BookingService = new BookingService()
+  private testService: TestService = new TestService()
+
+  private bookingParams = {
+    includeUser: false,
+    includeCovidTests: false,
+    includeTestSite: true
+  }
+
+  private testParams = {
+    includePatient: true,
+    includeAdministerer: true,
+    includeBooking: false
+  }
 
   async getUsers({
     includeBookings = true,
@@ -21,11 +35,11 @@ export class UserService {
     includeTestsAdministered = true
   }: GetUserParams): Promise<UserSchema[]> {
     const users = await this.userClient.getUsers() as AllUserSchema[]
-
-    if (includeBookings) {
-      await this.getBookingsForUsers(users)
-    }
-
+    const promises: Promise<any>[] = []
+    if (includeBookings) promises.push(this.getBookingsForUsers(users))
+    if (includeTestsTaken) promises.push(this.getTestsTakenForUsers(users))
+    if (includeTestsAdministered) promises.push(this.getTestsAdministeredForUsers(users))
+    await Promise.all(promises)
     return users
   }
 
@@ -43,9 +57,41 @@ export class UserService {
     return this.userClient.addUser(user)
   }
 
+  async getUserById(id: string, {
+    includeBookings = true,
+    includeTestsTaken = true,
+    includeTestsAdministered = true
+  }: GetUserParams): Promise<UserSchema> {
+    const user: AllUserSchema = await this.userClient.getTestById(id);
+    const promises: Promise<any>[] = []
+    if (includeBookings) promises.push(this.getBookings(user))
+    if (includeTestsTaken) promises.push(this.getTestsTaken(user))
+    if (includeTestsAdministered) promises.push(this.getTestsAdministered(user))
+    await Promise.all(promises)
+    return user
+  }
+
   private async getBookingsForUsers(users: AllUserSchema[]): Promise<void> {
-    await Promise.all(users.map(async (user) => {
-      user.bookings = await this.bookingService.getBookingsForIdList(user.bookingsIds, {})
-    }))
+    await Promise.all(users.map(this.getBookings))
+  }
+
+  private async getTestsTakenForUsers(users: AllUserSchema[]): Promise<void> {
+    await Promise.all(users.map(this.getTestsTaken))
+  }
+
+  private async getTestsAdministeredForUsers(users: AllUserSchema[]): Promise<void> {
+    await Promise.all(users.map(this.getTestsAdministered))
+  }
+
+  private async getBookings(user: AllUserSchema) {
+    user.bookings = await this.bookingService.getBookingsForIdList(user.bookingsIds, this.bookingParams)
+  }
+
+  private getTestsTaken = async (user: AllUserSchema) => {
+    user.testsTaken = await this.testService.getTestsForIdList(user.testsTakenIds, this.testParams)
+  }
+
+  private getTestsAdministered = async (user: AllUserSchema) => {
+    user.testsAdministered = await this.testService.getTestsForIdList(user.testsAdministeredIds, this.testParams)
   }
 }

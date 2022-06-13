@@ -6,7 +6,7 @@ const router = Router()
 const userService: UserService = new UserService()
 
 router.get('/', async (req, res, next) => {
-  userService.getUsers()
+  userService.getUsers({})
   .then(users => {
     res.send(users)
   })

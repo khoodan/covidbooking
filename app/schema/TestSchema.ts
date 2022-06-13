@@ -43,3 +43,5 @@ export interface TestDBSchema {
   updatedAt?: string;
   additionalInfo?: any; 
 }
+
+export type AllTestSchema = TestDBSchema & TestSchema
