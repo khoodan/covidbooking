@@ -1,8 +1,8 @@
 import { AllTestSchema, TestSchema } from "@schema/TestSchema";
 import { DynamoTestClient } from "src/client/aws/DynamoTestClient";
 import { TestClient } from "src/client/TestClient";
-import { BookingService, GetBookingParams } from "./BookingService";
-import { GetUserParams, UserService } from "./UserService";
+import { BookingService, bookingServiceInstance, GetBookingParams } from "./BookingService";
+import { GetUserParams, UserService, userServiceInstance } from "./UserService";
 
 export interface GetTestParams {
   includePatient?: boolean;
@@ -12,8 +12,8 @@ export interface GetTestParams {
 
 export class TestService {
   private testClient: TestClient = new DynamoTestClient();
-  private userService: UserService = new UserService();
-  private bookingService: BookingService = new BookingService();
+  private userService: UserService = userServiceInstance
+  private bookingService: BookingService = bookingServiceInstance
 
   private userParams: GetUserParams = {
     includeBookings: false,
@@ -65,3 +65,5 @@ export class TestService {
     test.booking = await this.bookingService.getBookingsForId(test.bookingId, this.bookingParams)
   }
 }
+
+export const testServiceInstance = new TestService()

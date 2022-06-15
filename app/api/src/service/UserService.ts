@@ -3,8 +3,8 @@ import { AllUserSchema, CreateUserSchema, UserSchema } from "@schema/UserSchema"
 import { randomUUID } from "crypto";
 import { DynamoUserClient } from "src/client/aws/DynamoUserClient";
 import { UserClient } from "src/client/UserClient";
-import { BookingService } from "./BookingService";
-import { TestService } from "./TestService";
+import { BookingService, bookingServiceInstance } from "./BookingService";
+import { TestService, testServiceInstance } from "./TestService";
 
 export interface GetUserParams {
   includeBookings?: boolean;
@@ -14,8 +14,8 @@ export interface GetUserParams {
 
 export class UserService {
   private userClient: UserClient = new DynamoUserClient()
-  private bookingService: BookingService = new BookingService()
-  private testService: TestService = new TestService()
+  private bookingService: BookingService = bookingServiceInstance
+  private testService: TestService = testServiceInstance
 
   private bookingParams = {
     includeUser: false,
@@ -95,3 +95,5 @@ export class UserService {
     user.testsAdministered = await this.testService.getTestsForIdList(user.testsAdministeredIds, this.testParams)
   }
 }
+
+export const userServiceInstance = new UserService()

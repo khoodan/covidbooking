@@ -1,9 +1,9 @@
-import { AllBookingSchema, BookingDBSchema, BookingSchema } from "@schema/BookingSchema";
+import { AllBookingSchema, BookingSchema } from "@schema/BookingSchema";
 import { DynamoBookingClient } from "src/client/aws/DynamoBookingClient";
 import { BookingClient } from "src/client/BookingClient";
 import { DataService } from "./DataService";
-import { GetTestParams, TestService } from "./TestService";
-import { GetUserParams, UserService } from "./UserService";
+import { GetTestParams, TestService, testServiceInstance } from "./TestService";
+import { GetUserParams, UserService, userServiceInstance } from "./UserService";
 
 export interface GetBookingParams {
   includeUser?: boolean;
@@ -13,8 +13,8 @@ export interface GetBookingParams {
 
 export class BookingService extends DataService {
   private bookingClient: BookingClient = new DynamoBookingClient();
-  private testService: TestService = new TestService()
-  private userService: UserService = new UserService()
+  private testService: TestService = testServiceInstance
+  private userService: UserService = userServiceInstance
 
   private testParams: GetTestParams = {
     includeAdministerer: true,
@@ -71,3 +71,5 @@ export class BookingService extends DataService {
     booking.customer = await this.userService.getUserById(booking.customerId, this.userParams)
   }
 }
+
+export const bookingServiceInstance = new BookingService()
