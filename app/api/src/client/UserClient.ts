@@ -1,7 +1,7 @@
-import { CreateUserSchema, UserDBSchema } from "@schema/UserSchema";
+import { UserDBSchema } from "@schema/UserSchema";
 
 export interface UserClient {
   getUsers(): Promise<UserDBSchema[]>
-  addUser(user: CreateUserSchema): Promise<void>
+  addUser(user: UserDBSchema): Promise<void>
   getTestById(userId: string): Promise<UserDBSchema>
 }

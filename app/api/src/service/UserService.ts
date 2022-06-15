@@ -1,10 +1,10 @@
 import { Status } from "@schema/Status";
-import { AllUserSchema, CreateUserSchema, UserSchema } from "@schema/UserSchema";
+import { AllUserSchema, CreateUserSchema, UserDBSchema, UserSchema } from "@schema/UserSchema";
 import { randomUUID } from "crypto";
 import { DynamoUserClient } from "src/client/aws/DynamoUserClient";
 import { UserClient } from "src/client/UserClient";
-import { BookingService, bookingServiceInstance } from "./BookingService";
-import { TestService, testServiceInstance } from "./TestService";
+import { bookingService } from "./BookingService";
+import { testService } from "./TestService";
 
 export interface GetUserParams {
   includeBookings?: boolean;
@@ -14,16 +14,14 @@ export interface GetUserParams {
 
 export class UserService {
   private userClient: UserClient = new DynamoUserClient()
-  private bookingService: BookingService = bookingServiceInstance
-  private testService: TestService = testServiceInstance
 
-  private bookingParams = {
+  private static bookingParams = {
     includeUser: false,
     includeCovidTests: false,
     includeTestSite: true
   }
 
-  private testParams = {
+  private static testParams = {
     includePatient: true,
     includeAdministerer: true,
     includeBooking: false
@@ -34,6 +32,7 @@ export class UserService {
     includeTestsTaken = true,
     includeTestsAdministered = true
   }: GetUserParams): Promise<UserSchema[]> {
+    // console.log(userService, testService, bookingService, testSiteService)
     const users = await this.userClient.getUsers() as AllUserSchema[]
     const promises: Promise<any>[] = []
     if (includeBookings) promises.push(this.getBookingsForUsers(users))
@@ -52,9 +51,13 @@ export class UserService {
       !user.phoneNumber
     ) throw new Error(Status.BADREQUEST)
 
-    user.id = randomUUID()
+    const userDB: UserDBSchema = user
+    userDB.id = randomUUID()
+    userDB.bookingsIds = []
+    userDB.testsTakenIds = []
+    userDB.testsAdministeredIds = []
 
-    return this.userClient.addUser(user)
+    return this.userClient.addUser(userDB)
   }
 
   async getUserById(id: string, {
@@ -84,16 +87,17 @@ export class UserService {
   }
 
   private async getBookings(user: AllUserSchema) {
-    user.bookings = await this.bookingService.getBookingsForIdList(user.bookingsIds, this.bookingParams)
+    console.log(user)
+    user.bookings = await bookingService.getBookingsForIdList(user.bookingsIds, UserService.bookingParams)
   }
 
   private getTestsTaken = async (user: AllUserSchema) => {
-    user.testsTaken = await this.testService.getTestsForIdList(user.testsTakenIds, this.testParams)
+    user.testsTaken = await testService.getTestsForIdList(user.testsTakenIds, UserService.testParams)
   }
 
   private getTestsAdministered = async (user: AllUserSchema) => {
-    user.testsAdministered = await this.testService.getTestsForIdList(user.testsAdministeredIds, this.testParams)
+    user.testsAdministered = await testService.getTestsForIdList(user.testsAdministeredIds, UserService.testParams)
   }
 }
 
-export const userServiceInstance = new UserService()
+export const userService = new UserService()

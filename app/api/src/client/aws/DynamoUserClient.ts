@@ -1,7 +1,7 @@
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { CreateUserSchema, UserDBSchema } from "@schema/UserSchema";
+import { UserDBSchema } from "@schema/UserSchema";
 import { UserClient } from "../UserClient";
 import { DynamoClient } from "./DynamoClient";
 
@@ -20,7 +20,7 @@ export class DynamoUserClient extends DynamoClient implements UserClient {
     return users;
   }
 
-  async addUser(user: CreateUserSchema): Promise<void> {
+  async addUser(user: UserDBSchema): Promise<void> {
     await this.client.send(new PutCommand({
       TableName: this.table,
       Item: user

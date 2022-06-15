@@ -2,8 +2,8 @@ import { AllBookingSchema, BookingSchema } from "@schema/BookingSchema";
 import { DynamoBookingClient } from "src/client/aws/DynamoBookingClient";
 import { BookingClient } from "src/client/BookingClient";
 import { DataService } from "./DataService";
-import { GetTestParams, TestService, testServiceInstance } from "./TestService";
-import { GetUserParams, UserService, userServiceInstance } from "./UserService";
+import { GetTestParams, testService } from "./TestService";
+import { GetUserParams, userService } from "./UserService";
 
 export interface GetBookingParams {
   includeUser?: boolean;
@@ -13,16 +13,14 @@ export interface GetBookingParams {
 
 export class BookingService extends DataService {
   private bookingClient: BookingClient = new DynamoBookingClient();
-  private testService: TestService = testServiceInstance
-  private userService: UserService = userServiceInstance
 
-  private testParams: GetTestParams = {
+  private static testParams: GetTestParams = {
     includeAdministerer: true,
     includeBooking: false,
     includePatient: true
   }
 
-  private userParams: GetUserParams = {
+  private static userParams: GetUserParams = {
     includeBookings: false,
     includeTestsAdministered: true,
     includeTestsTaken: true
@@ -48,8 +46,10 @@ export class BookingService extends DataService {
   }: GetBookingParams): Promise<BookingSchema> {
     const booking: AllBookingSchema = await this.bookingClient.getBookingForId(bookingId);
 
+    if (includeUser) {}
+
     if (includeCovidTests) {
-      await this.testService.getTestsForIdList(booking.covidTestIds, {
+      await testService.getTestsForIdList(booking.covidTestIds, {
         includePatient: includeUser,
         includeAdministerer: includeUser,
         includeBooking: false
@@ -64,12 +64,12 @@ export class BookingService extends DataService {
   }
 
   private async getTestsForBooking(booking: AllBookingSchema): Promise<void> {
-    booking.covidTests = await this.testService.getTestsForIdList(booking.covidTestIds, this.testParams)
+    booking.covidTests = await testService.getTestsForIdList(booking.covidTestIds, BookingService.testParams)
   }
 
   private async getUserForBooking(booking: AllBookingSchema): Promise<void> {
-    booking.customer = await this.userService.getUserById(booking.customerId, this.userParams)
+    booking.customer = await userService.getUserById(booking.customerId, BookingService.userParams)
   }
 }
 
-export const bookingServiceInstance = new BookingService()
+export const bookingService = new BookingService()

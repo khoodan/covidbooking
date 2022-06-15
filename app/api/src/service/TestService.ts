@@ -1,8 +1,8 @@
 import { AllTestSchema, TestSchema } from "@schema/TestSchema";
 import { DynamoTestClient } from "src/client/aws/DynamoTestClient";
 import { TestClient } from "src/client/TestClient";
-import { BookingService, bookingServiceInstance, GetBookingParams } from "./BookingService";
-import { GetUserParams, UserService, userServiceInstance } from "./UserService";
+import { bookingService, GetBookingParams } from "./BookingService";
+import { GetUserParams, userService } from "./UserService";
 
 export interface GetTestParams {
   includePatient?: boolean;
@@ -12,16 +12,14 @@ export interface GetTestParams {
 
 export class TestService {
   private testClient: TestClient = new DynamoTestClient();
-  private userService: UserService = userServiceInstance
-  private bookingService: BookingService = bookingServiceInstance
 
-  private userParams: GetUserParams = {
+  private static userParams: GetUserParams = {
     includeBookings: false,
     includeTestsAdministered: false,
     includeTestsTaken: false
   }
 
-  private bookingParams: GetBookingParams = {
+  private static bookingParams: GetBookingParams = {
     includeUser: true,
     includeCovidTests: false,
     includeTestSite: true
@@ -54,16 +52,16 @@ export class TestService {
   }
 
   private async getPatient(test: AllTestSchema) {
-    test.patient = await this.userService.getUserById(test.patientId, this.userParams)
+    test.patient = await userService.getUserById(test.patientId, TestService.userParams)
   }
 
   private async getAdministerer(test: AllTestSchema) {
-    test.administerer = await this.userService.getUserById(test.administererId, this.userParams)
+    test.administerer = await userService.getUserById(test.administererId, TestService.userParams)
   }
 
   private async getBooking(test: AllTestSchema) {
-    test.booking = await this.bookingService.getBookingsForId(test.bookingId, this.bookingParams)
+    test.booking = await bookingService.getBookingsForId(test.bookingId, TestService.bookingParams)
   }
 }
 
-export const testServiceInstance = new TestService()
+export const testService = new TestService()

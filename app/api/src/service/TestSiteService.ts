@@ -4,4 +4,4 @@ export class TestSiteService extends DataService {
 
 }
 
-export const testSiteServiceInstance = new TestSiteService()
+export const testSiteService = new TestSiteService()
